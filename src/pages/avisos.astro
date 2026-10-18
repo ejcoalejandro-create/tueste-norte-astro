@@ -1,0 +1,24 @@
+---
+// ERROR PROVOCADO A PROPÓSITO (aviso sin "titulo"):
+// **titulo**: **titulo**: Required
+// Lo entiendo así: el esquema exige "titulo" como string obligatorio y,
+// como cata-noviembre.md no lo tenía, el build falla pronto y dice
+// qué archivo y qué campo están mal.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AvisoCard from '../components/AvisoCard.astro';
+
+const avisos = await getCollection('avisos');
+
+avisos.sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+---
+
+<BaseLayout titulo="Avisos" descripcion="Avisos y novedades de la tienda">
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <h1 class="text-4xl font-bold text-stone-900">Avisos de la tienda</h1>
+
+    <div class="mt-8 flex flex-col gap-6">
+      {avisos.map((aviso) => <AvisoCard aviso={aviso} />)}
+    </div>
+  </div>
+</BaseLayout>
