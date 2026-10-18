@@ -1,5 +1,5 @@
 ---
-titulo: "Cata mensual de noviembre
+titulo: "Cata mensual de noviembre"
 fecha: 2026-10-18
 importante: true
 ---
