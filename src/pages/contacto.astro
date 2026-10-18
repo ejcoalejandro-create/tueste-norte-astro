@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const datos = [
+  { etiqueta: 'Dirección', valor: 'Calle del Tostadero, 12 · 39001 Santander' },
+  { etiqueta: 'Teléfono', valor: '942 00 00 00', href: 'tel:+34942000000' },
+  { etiqueta: 'Email', valor: 'hola@tuestenorte.example', href: 'mailto:hola@tuestenorte.example' },
+];
+
+const horarios = [
+  { dias: 'Martes a viernes', horas: '10:00 – 14:00 y 17:00 – 20:00' },
+  { dias: 'Sábado', horas: '10:00 – 14:00' },
+  { dias: 'Domingo y lunes', horas: 'Cerrado' },
+];
+---
+
+<BaseLayout titulo="Contacto" descripcion="Datos y horario de la tienda de Tueste Norte">
+  <div class="mx-auto max-w-5xl px-4 py-12">
+    <h1 class="text-4xl font-bold text-stone-900">Contacto</h1>
+    <p class="mt-4 max-w-2xl text-lg text-stone-600">
+      Ven a vernos a la tienda, huele los cafés y pregúntanos lo que quieras.
+    </p>
+
+    <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
+      <section class="rounded-xl border border-stone-200 bg-white p-6">
+        <h2 class="text-xl font-semibold text-amber-800">Datos de la tienda</h2>
+        <dl class="mt-4 space-y-4">
+          {datos.map((dato) => (
+            <div>
+              <dt class="text-sm font-medium text-stone-500">{dato.etiqueta}</dt>
+              <dd class="text-stone-800">
+                {dato.href ? <a href={dato.href} class="underline hover:text-amber-800">{dato.valor}</a> : dato.valor}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
+      <section class="rounded-xl border border-stone-200 bg-white p-6">
+        <h2 class="text-xl font-semibold text-amber-800">Horario</h2>
+        <ul class="mt-4 space-y-3">
+          {horarios.map((h) => (
+            <li class="flex flex-col sm:flex-row sm:justify-between">
+              <span class="font-medium text-stone-800">{h.dias}</span>
+              <span class="text-stone-600">{h.horas}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-6 text-sm text-stone-500">
+          Una vez al mes abrimos por la tarde para la cata mensual. Mira los <a href="/avisos" class="underline">avisos</a>.
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
