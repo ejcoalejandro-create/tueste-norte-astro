@@ -1,46 +1,41 @@
-# Astro Starter Kit: Basics
+# Tueste Norte — Astro
 
-```sh
-npm create astro@latest -- --template basics
+Web estática de Tueste Norte (tostadero de café de especialidad), hecha con
+**Astro** y **Tailwind CSS 4**. Incluye los ejercicios de la semana 4.
+
+## Requisitos
+
+- Node.js 22.12 o superior, en versión par (22 o 24). Comprobar con `node -v`.
+
+## Cómo arrancar el proyecto
+
+```bash
+npm install        # instala las dependencias (node_modules no se sube a git)
+npm run dev        # servidor de desarrollo en http://localhost:4321
+npm run build      # genera la web final en dist/
+npm run preview    # sirve dist/ en local para comprobar el build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Qué hay en cada ejercicio
 
-## 🚀 Project Structure
+| Ejercicio | Dónde | Qué es |
+|---|---|---|
+| 1 | `src/components/Badge.astro`, `src/pages/pruebas.astro` | Componente con props (`texto`, `tono`) y página de pruebas |
+| 2 | `src/layouts/BaseLayout.astro`, `src/pages/quienes-somos.astro` | Layout con slot y página con rejilla responsive de Tailwind |
+| 3 | `src/content.config.ts`, `src/content/avisos/`, `src/pages/avisos.astro` | Colección de contenido `avisos` con esquema validado |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Estructura
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+```
+src/
+├── components/   Badge, Header, Footer, AvisoCard
+├── layouts/      BaseLayout
+├── content/      avisos/ (Markdown)
+├── pages/        rutas de la web (una por archivo)
+└── styles/       global.css (importa Tailwind)
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Notas
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- Tailwind 4 se instala como plugin de Vite en `astro.config.mjs`; no existe `tailwind.config.js`.
+- El esquema de `avisos` se define con zod, importado de `astro/zod`.
