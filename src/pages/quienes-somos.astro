@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const valores = [
+  {
+    titulo: 'Origen trazable',
+    texto: 'Trabajamos con pequeños productores y sabemos de qué finca viene cada saco.',
+  },
+  {
+    titulo: 'Tueste en pequeñas tandas',
+    texto: 'Tostamos nosotros mismos, poco y a menudo, para que llegue fresco a tu taza.',
+  },
+  {
+    titulo: 'Cercanía',
+    texto: 'Una tienda de barrio donde probar, preguntar y hacer una cata cada mes.',
+  },
+];
+---
+
+<BaseLayout titulo="Quiénes somos" descripcion="Conoce el tostadero de Tueste Norte">
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <h1 class="text-4xl font-bold text-stone-900">Un tostadero pequeño con las ideas claras</h1>
+
+    <p class="mt-6 text-lg leading-relaxed text-stone-700">
+      Tueste Norte nació como un pequeño tostadero de barrio. Empezamos tostando café
+      verde en tandas cortas para unos pocos vecinos, y hoy seleccionamos cafés de
+      origen de Etiopía, Colombia, Brasil y Guatemala.
+    </p>
+    <p class="mt-4 text-lg leading-relaxed text-stone-700">
+      Tenemos tienda física, donde puedes oler y probar antes de elegir, y una vez al
+      mes abrimos por la tarde para catar juntos varios cafés. No hace falta saber
+      nada: solo tener curiosidad.
+    </p>
+
+    <section class="mt-12">
+      <h2 class="text-2xl font-bold text-stone-900">Nuestros valores</h2>
+
+      <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+        {valores.map((valor) => (
+          <article class="rounded-xl border border-stone-200 bg-white p-6 shadow-sm">
+            <h3 class="text-lg font-semibold text-amber-800">{valor.titulo}</h3>
+            <p class="mt-2 text-stone-600">{valor.texto}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

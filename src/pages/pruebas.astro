@@ -1,21 +1,15 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import Badge from '../components/Badge.astro';
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pruebas · Tueste Norte</title>
-  </head>
-  <body class="bg-stone-50 p-8">
-    <h1 class="text-2xl font-bold text-stone-800">Pruebas de Badge</h1>
-
+<BaseLayout titulo="Pruebas">
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <h1 class="text-2xl font-bold">Pruebas de Badge</h1>
     <div class="mt-6 flex flex-wrap gap-3">
       <Badge texto="tueste claro" tono="tueste" />
       <Badge texto="Etiopía" tono="origen" />
       <Badge texto="¡nuevo!" tono="nuevo" />
     </div>
-  </body>
-</html>
+  </div>
+</BaseLayout>
