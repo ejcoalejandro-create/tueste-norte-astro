@@ -2,21 +2,59 @@
 const enlaces = [
   { texto: 'Inicio', href: '/' },
   { texto: 'Quiénes somos', href: '/quienes-somos' },
-  { texto: 'Avisos', href: '/avisos' },
+  { texto: 'Catálogo', href: '/catalogo' },
+  { texto: 'Blog', href: '/blog' },
+  { texto: 'Contacto', href: '/contacto' },
 ];
+
+const { pathname } = Astro.url;
+const esActivo = (href: string) =>
+  href === '/' ? pathname === '/' : pathname.startsWith(href);
 ---
 
-<header class="border-b border-stone-200 bg-white">
-  <nav class="mx-auto flex max-w-4xl items-center justify-between px-4 py-4">
-    <a href="/" class="text-xl font-bold tracking-wide text-stone-900">
-      Tueste Norte
-    </a>
-    <ul class="flex gap-6 text-stone-600">
+<header class="sticky top-0 z-10 border-b border-stone-200 bg-white">
+  <nav class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3" aria-label="Principal">
+    <a href="/" class="text-xl font-bold tracking-wide text-stone-900">Tueste Norte</a>
+
+    <!-- Escritorio: menú en fila -->
+    <ul class="hidden gap-6 md:flex">
       {enlaces.map((enlace) => (
         <li>
-          <a href={enlace.href} class="hover:text-amber-800">{enlace.texto}</a>
+          <a
+            href={enlace.href}
+            aria-current={esActivo(enlace.href) ? 'page' : undefined}
+            class:list={[
+              'hover:text-amber-800',
+              esActivo(enlace.href) ? 'font-semibold text-amber-800' : 'text-stone-600',
+            ]}
+          >
+            {enlace.texto}
+          </a>
         </li>
       ))}
     </ul>
+
+    <!-- Móvil: menú desplegable sin JavaScript -->
+    <details class="relative md:hidden">
+      <summary class="cursor-pointer list-none rounded-lg border border-stone-300 px-4 py-2 text-sm font-medium text-stone-700 [&::-webkit-details-marker]:hidden">
+        Menú
+      </summary>
+      <ul class="absolute right-0 mt-2 w-56 rounded-xl border border-stone-200 bg-white p-2 shadow-lg">
+        {enlaces.map((enlace) => (
+          <li>
+            <a
+              href={enlace.href}
+              aria-current={esActivo(enlace.href) ? 'page' : undefined}
+              class:list={[
+                'block rounded-lg px-4 py-3',
+                esActivo(enlace.href) ? 'bg-amber-50 font-semibold text-amber-800' : 'text-stone-700',
+              ]}
+            >
+              {enlace.texto}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
   </nav>
 </header>

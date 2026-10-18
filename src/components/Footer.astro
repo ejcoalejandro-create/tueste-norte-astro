@@ -2,6 +2,12 @@
 const anio = new Date().getFullYear();
 ---
 
-<footer class="border-t border-stone-200 bg-white py-6 text-center text-sm text-stone-500">
-  <p>© {anio} Tueste Norte · Café de especialidad tostado en pequeñas tandas</p>
+<footer class="border-t border-stone-200 bg-white py-8 text-sm text-stone-500">
+  <div class="mx-auto flex max-w-5xl flex-col gap-3 px-4 sm:flex-row sm:items-center sm:justify-between">
+    <p>© {anio} Tueste Norte · Café de especialidad tostado en pequeñas tandas</p>
+    <p class="flex gap-4">
+      <a href="/avisos" class="hover:text-amber-800">Avisos</a>
+      <a href="/contacto" class="hover:text-amber-800">Contacto</a>
+    </p>
+  </div>
 </footer>
