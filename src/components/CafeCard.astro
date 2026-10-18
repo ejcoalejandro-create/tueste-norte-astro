@@ -1,0 +1,28 @@
+---
+import Badge from './Badge.astro';
+import type { Cafe } from '../data/cafes';
+
+type Props = Cafe;
+
+const { nombre, origen, notas, tueste, precio } = Astro.props;
+
+const precioTexto = precio.toLocaleString('es-ES', {
+  style: 'currency',
+  currency: 'EUR',
+});
+---
+
+<article class="flex h-full flex-col rounded-xl border border-stone-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+  <div class="flex flex-wrap gap-2">
+    <Badge texto={`tueste ${tueste}`} tono="tueste" />
+    <Badge texto={origen} tono="origen" />
+  </div>
+
+  <h3 class="mt-4 text-xl font-bold text-stone-900">{nombre}</h3>
+  <p class="mt-2 flex-1 italic text-stone-600">{notas}</p>
+
+  <p class="mt-4 text-lg font-semibold text-amber-800">
+    {precioTexto}
+    <span class="text-sm font-normal text-stone-400">/ 250 g</span>
+  </p>
+</article>
