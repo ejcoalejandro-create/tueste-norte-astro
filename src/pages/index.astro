@@ -1,15 +1,52 @@
 ---
-import '../styles/global.css';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CafeCard from '../components/CafeCard.astro';
+import PostCard from '../components/PostCard.astro';
+import { cafes } from '../data/cafes';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
 ---
 
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tueste Norte</title>
-  </head>
-  <body class="bg-stone-50 p-8">
-    <h1 class="text-4xl font-bold text-amber-800">Tueste Norte</h1>
-    <p class="mt-2 text-stone-600">Café de especialidad, tostado en pequeñas tandas.</p>
-  </body>
-</html>
+<BaseLayout titulo="Inicio" descripcion="Tueste Norte: café de especialidad tostado en pequeñas tandas">
+  <section class="bg-stone-900 text-stone-50">
+    <div class="mx-auto max-w-5xl px-4 py-16 sm:py-24">
+      <p class="text-sm font-medium uppercase tracking-widest text-amber-300">Café de especialidad</p>
+      <h1 class="mt-3 text-4xl font-bold sm:text-6xl">Tostado en pequeñas tandas, en el norte</h1>
+      <p class="mt-6 max-w-2xl text-lg text-stone-300">
+        Cafés de origen de Etiopía, Colombia, Brasil y Guatemala, tostados por nosotros
+        y listos para tu taza.
+      </p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href="/catalogo" class="rounded-lg bg-amber-500 px-6 py-3 text-center font-semibold text-stone-900 hover:bg-amber-400">Ver el catálogo</a>
+        <a href="/blog" class="rounded-lg border border-stone-500 px-6 py-3 text-center font-semibold hover:bg-stone-800">Leer el blog</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-5xl px-4 py-12">
+    <section>
+      <h2 class="text-3xl font-bold text-stone-900">Nuestros cafés</h2>
+      <div class="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
+        {cafes.map((cafe) => <CafeCard {...cafe} />)}
+      </div>
+    </section>
+
+    <section class="mt-16 rounded-xl border border-amber-200 bg-amber-50 p-6 sm:p-8">
+      <h2 class="text-2xl font-bold text-stone-900">Cata mensual</h2>
+      <p class="mt-2 text-stone-700">
+        Una vez al mes abrimos por la tarde para catar juntos varios cafés. No hace falta saber nada de café, solo tener curiosidad.
+        Consulta los <a href="/avisos" class="underline">avisos</a> para ver la próxima fecha.
+      </p>
+    </section>
+
+    <section class="mt-16">
+      <h2 class="text-3xl font-bold text-stone-900">Del blog</h2>
+      <div class="mt-6 flex flex-col gap-6">
+        {posts.map((post) => <PostCard post={post} />)}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
