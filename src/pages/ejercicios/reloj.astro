@@ -1,0 +1,24 @@
+---
+// CONCLUSIONES DEL EJERCICIO 3:
+// - En el BUILD (npm run build) se ejecuta el frontmatter de las páginas con
+//   prerender = true: su HTML se genera una sola vez y queda guardado como archivo.
+// - Por PETICIÓN (SSR) se ejecuta el frontmatter de las páginas sin prerender:
+//   cada visita vuelve a ejecutar el código en el servidor de Node.
+// - Sin prerender, la hora cambiaba en cada recarga (por ejemplo, 10:41:02, 10:41:09...).
+//   Con prerender = true se quedó congelada en la hora del build (por ejemplo, 10:43:15).
+// - La hora congelada demuestra que ese código ya no se ejecuta cuando llega un
+//   visitante: el servidor solo entrega un HTML que ya estaba hecho.
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const hora = new Date().toLocaleTimeString('es-ES');
+---
+
+<BaseLayout titulo="Reloj">
+  <div class="mx-auto max-w-4xl px-4 py-12">
+    <h1 class="text-3xl font-bold text-stone-900">Reloj del servidor</h1>
+    <p class="mt-4 text-5xl font-bold text-amber-800">{hora}</p>
+    <p class="mt-4 text-stone-600">Recarga la página y fíjate en si la hora cambia.</p>
+  </div>
+</BaseLayout>
