@@ -25,9 +25,9 @@ console.log(`Entradas recibidas: ${entradas.length}`);
     <ul class="mt-6 list-disc space-y-2 pl-6 text-stone-700">
       {entradas.map((entrada: any) => (
         <li>
-          <span set:html={entrada.title.rendered} />
-          ({new Date(entrada.date).toLocaleDateString('es-ES')})
-        </li>
+  <span set:html={entrada.title.rendered} />{' '}
+  ({new Date(entrada.date).toLocaleDateString('es-ES')})
+</li>
       ))}
     </ul>
   </div>
