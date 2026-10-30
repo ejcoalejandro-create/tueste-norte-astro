@@ -1,20 +1,31 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+import type { Post } from '../lib/wp';
 
 interface Props {
-  post: CollectionEntry<'blog'>;
+  post: Post;
 }
 
 const { post } = Astro.props;
-const { title, description, pubDate } = post.data;
 ---
 
-<article class="rounded-xl border border-stone-200 bg-white p-6 transition-shadow hover:shadow-md">
-  <time datetime={pubDate.toISOString()} class="text-sm text-stone-500">
-    {pubDate.toLocaleDateString('es-ES', { dateStyle: 'long' })}
-  </time>
-  <h2 class="mt-1 text-xl font-semibold text-stone-900">
-    <a href={`/blog/${post.id}`} class="hover:text-amber-800">{title}</a>
-  </h2>
-  <p class="mt-2 text-stone-600">{description}</p>
+<article class="overflow-hidden rounded-xl border border-stone-200 bg-white transition-shadow hover:shadow-md sm:flex">
+  {post.imagen && (
+    <a href={`/blog/${post.slug}`} class="sm:w-64 sm:shrink-0">
+      <img
+        src={post.imagen.url}
+        alt={post.imagen.alt}
+        loading="lazy"
+        class="aspect-[16/9] w-full object-cover sm:h-full"
+      />
+    </a>
+  )}
+  <div class="p-6">
+    <time datetime={post.fecha.toISOString()} class="text-sm text-stone-500">
+      {post.fecha.toLocaleDateString('es-ES', { dateStyle: 'long' })}
+    </time>
+    <h2 class="mt-1 text-xl font-semibold text-stone-900">
+      <a href={`/blog/${post.slug}`} class="hover:text-amber-800">{post.titulo}</a>
+    </h2>
+    <p class="mt-2 text-stone-600">{post.extracto}</p>
+  </div>
 </article>
