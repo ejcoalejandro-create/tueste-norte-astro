@@ -1,30 +1,57 @@
 ---
-import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPost, type Post } from '../../lib/wp';
 
-export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
-  }));
+const { slug } = Astro.params;
+
+let post: Post | null = null;
+let hayError = false;
+
+try {
+  post = await getPost(slug ?? '');
+} catch (error) {
+  console.error(error);
+  hayError = true;
+  Astro.response.status = 503;
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+if (!post && !hayError) {
+  return Astro.rewrite('/404');
+}
+
+if (post) {
+  Astro.response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+}
 ---
 
-<BaseLayout titulo={post.data.title} descripcion={post.data.description}>
+<BaseLayout titulo={post?.titulo ?? 'Blog'} descripcion={post?.extracto || undefined}>
   <article class="mx-auto max-w-3xl px-4 py-12">
     <a href="/blog" class="text-sm text-amber-800 hover:underline">← Volver al blog</a>
-    <h1 class="mt-4 text-4xl font-bold text-stone-900">{post.data.title}</h1>
-    <p class="mt-2 text-stone-500">
-      Por {post.data.author} ·
-      {post.data.pubDate.toLocaleDateString('es-ES', { dateStyle: 'long' })}
-    </p>
 
-    <div class="prose prose-stone mt-8 max-w-none prose-headings:text-stone-900 prose-a:text-amber-800">
-      <Content />
-    </div>
+    {post ? (
+      <>
+        <h1 class="mt-4 text-4xl font-bold text-stone-900">{post.titulo}</h1>
+        <p class="mt-2 text-stone-500">
+          {post.fecha.toLocaleDateString('es-ES', { dateStyle: 'long' })}
+        </p>
+
+        {post.imagen && (
+          <img
+            src={post.imagen.url}
+            alt={post.imagen.alt}
+            class="mt-6 aspect-[16/9] w-full rounded-xl object-cover"
+          />
+        )}
+
+        <div
+          class="prose prose-stone mt-8 max-w-none prose-headings:text-stone-900 prose-a:text-amber-800"
+          set:html={post.contenidoHtml}
+        />
+      </>
+    ) : (
+      <p class="mt-8 rounded-xl border border-amber-300 bg-amber-50 p-6 text-stone-700">
+        Ahora mismo no podemos cargar este artículo. Inténtalo de nuevo en unos minutos.
+      </p>
+    )}
   </article>
 </BaseLayout>

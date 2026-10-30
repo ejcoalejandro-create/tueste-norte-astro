@@ -1,21 +1,36 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
+import { getPosts, type Post } from '../../lib/wp';
 
-const posts = await getCollection('blog', ({ data }) => !data.draft);
-posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+let posts: Post[] = [];
+let hayError = false;
+
+try {
+  posts = await getPosts();
+  Astro.response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+} catch (error) {
+  console.error(error);
+  hayError = true;
+  Astro.response.status = 503;
+}
 ---
 
 <BaseLayout titulo="Blog" descripcion="Recetas y métodos de preparación de café">
   <div class="mx-auto max-w-5xl px-4 py-12">
     <h1 class="text-4xl font-bold text-stone-900">Recetas y métodos de preparación</h1>
-       <p class="mt-4 max-w-2xl text-lg text-stone-600">
-      Aprende a sacar lo mejor de tu café en casa.
-    </p>
+    <p class="mt-4 max-w-2xl text-lg text-stone-600">Aprende a sacar lo mejor de tu café en casa.</p>
 
-    <div class="mt-10 flex flex-col gap-6">
-      {posts.map((post) => <PostCard post={post} />)}
-    </div>
+    {hayError ? (
+      <p class="mt-10 rounded-xl border border-amber-300 bg-amber-50 p-6 text-stone-700">
+        Ahora mismo no podemos cargar el blog. Inténtalo de nuevo en unos minutos.
+      </p>
+    ) : posts.length === 0 ? (
+      <p class="mt-10 text-stone-600">Todavía no hay artículos publicados.</p>
+    ) : (
+      <div class="mt-10 flex flex-col gap-6">
+        {posts.map((post) => <PostCard post={post} />)}
+      </div>
+    )}
   </div>
 </BaseLayout>
