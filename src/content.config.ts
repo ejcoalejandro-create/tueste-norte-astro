@@ -11,15 +11,4 @@ const avisos = defineCollection({
   }),
 });
 
-const blog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    pubDate: z.coerce.date(),
-    author: z.string().default('Tueste Norte'),
-    draft: z.boolean().default(false),
-  }),
-});
-
-export const collections = { avisos, blog };
+export const collections = { avisos };
