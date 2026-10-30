@@ -5,6 +5,9 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   output: 'server',
   adapter: node({ mode: 'standalone' }),
+  redirects: {
+    '/catalogo': '/cafes',
+  },
   vite: {
     plugins: [tailwindcss()],
   },

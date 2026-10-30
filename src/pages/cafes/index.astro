@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CafeCard from '../../components/CafeCard.astro';
+import { getCafes, type Cafe } from '../../lib/wp';
+
+let cafes: Cafe[] = [];
+let hayError = false;
+
+try {
+  cafes = await getCafes();
+  // Un CDN guardará esta página 60 s: absorbe picos de visitas sin molestar a WordPress.
+  Astro.response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+} catch (error) {
+  console.error(error);
+  hayError = true;
+  Astro.response.status = 503;
+}
+---
+
+<BaseLayout titulo="Cafés" descripcion="Nuestros cafés de origen: Etiopía, Colombia, Brasil y Guatemala">
+  <div class="mx-auto max-w-5xl px-4 py-12">
+    <h1 class="text-4xl font-bold text-stone-900">Nuestros cafés</h1>
+    <p class="mt-4 max-w-2xl text-lg text-stone-600">
+      Cafés de origen tostados por nosotros en pequeñas tandas. Los precios son por paquete de 250 g.
+    </p>
+
+    {hayError ? (
+      <p class="mt-10 rounded-xl border border-amber-300 bg-amber-50 p-6 text-stone-700">
+        Ahora mismo no podemos cargar los cafés. Inténtalo de nuevo en unos minutos.
+      </p>
+    ) : cafes.length === 0 ? (
+      <p class="mt-10 text-stone-600">Todavía no hay cafés publicados.</p>
+    ) : (
+      <div class="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {cafes.map((cafe) => <CafeCard {...cafe} />)}
+      </div>
+    )}
+  </div>
+</BaseLayout>
